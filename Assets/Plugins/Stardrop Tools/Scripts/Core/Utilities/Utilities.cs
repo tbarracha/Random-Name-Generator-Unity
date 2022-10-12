@@ -13,6 +13,8 @@ public static class Utilities
 {
     static Camera camera;
 
+    public static bool RandomTrueOrFalse() => ConvertIntToBool(Random.Range(0, 2));
+
     /// <summary>
     /// Invokes the InitializeManager() method on an array of IManager
     /// </summary>
