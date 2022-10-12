@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df86fc12375f79941bc4a9dbe7499860, type: 3}
+  m_Name: Random Name Generator SO
+  m_EditorClassIdentifier: 
+  alphabet: {fileID: 11400000, guid: 9daac1fd3d3ec8f47843489fe26451ae, type: 2}
+  amountOfNamesToGenerate: 50
+  clickMeToGenerateNames: 0
+  names:
+  - ao
+  - sea
+  - keg
+  - dhah
+  - xish
+  - gsh
+  - vev
+  - eph
+  - jah
+  - dhph
+  - whae
+  - phe
+  - moaa
+  - lhs
+  - fez
+  - fs
+  - ci
+  - fx
+  - ssqh
+  - xesh
+  - wik
+  - qivu
+  - ury
+  - ukh
+  - jea
+  - qeae
+  - leae
+  - kia
+  - zow
+  - sb
+  - gf
+  - gqh
+  - uau
+  - qhla
+  - xen
+  - mayb
+  - har
+  - yuso
+  - qei
+  - vou
+  - cpa
+  - zezu
+  - nhah
+  - vkh
+  - uf
+  - af
+  - dk
+  - kez
+  - oz
+  - vq
+  vogals: []
