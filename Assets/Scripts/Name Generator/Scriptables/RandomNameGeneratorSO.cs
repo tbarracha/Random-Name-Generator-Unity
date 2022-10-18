@@ -5,23 +5,18 @@ using NaughtyAttributes;
 [CreateAssetMenu(menuName = "Random Name Generator / Random Name Generator")]
 public class RandomNameGeneratorSO : ScriptableObject
 {
-    [SerializeField] AlphabetSO alphabet;
+    public static readonly List<char> alphabet = new List<char> { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'y', 'x', 'z' };
+    public static readonly List<char> vowels = new List<char> { 'a', 'e', 'i', 'o', 'u' };
+    public static readonly List<char> alphabetWithoutVowels = new List<char> { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'z' };
 
     [Header("Parameters")]
     public int minLetterCount = 2;
     public int maxLetterCount = 5;
 
-    [Space]
-    public int minSubdivions = 2;
-    public int maxSubdivions = 2;
-
-    [Space]
-    public int oneInXToAddAnH = 10;
-    public int oneInXToModifyLetter = 8;
-
     [Header("Names")]
     public int amountOfNamesToGenerate = 5;
     public bool clickMeToGenerateNames;
+    public bool modifyNames = true;
     [Space]
     public List<string> names;
 
@@ -35,15 +30,17 @@ public class RandomNameGeneratorSO : ScriptableObject
         for (int i = 0; i < amount; i++)
         {
             n = GenerateNameBasedOnLetterCount();
-            n = NameModifier(n);
+
+            if (modifyNames)
+                n = NameModifier(n);
 
             names.Add(n);
         }
     }
 
-    
+
     /// <summary>
-    /// Generate A SINGLE name based on amount of letters, in a "vowel-non vowel" pattern
+    /// Generate A SINGLE name based on amount of letters, in a 'vowel' - 'non vowel' pattern (and vice-versa)
     /// </summary>
     public string GenerateNameBasedOnLetterCount()
     {
@@ -51,117 +48,122 @@ public class RandomNameGeneratorSO : ScriptableObject
         int letterCount = Random.Range(minLetterCount, maxLetterCount + 1);
         List<char> letters = new List<char>();
 
-        // 2) Generate chars / letters
+        // 2) Letter Generation
         for (int i = 0; i <= letterCount; i++)
         {
-            // Generate name first letter
+            // 2.1) Add first letter
             if (i == 0)
             {
-                letters.Add(alphabet.RandomAlphabetLetter);
+                letters.Add(alphabet.GetRandom());
                 continue;
             }
 
-            char lastLetter = letters[letters.Count - 1];
+            // 2.2) Check previous letter and apply 'vowel' - 'non-vowel' pattern
+            char previous = letters[letters.Count - 1];
 
-            // Previous was a vowel, so we need to add a random alphabet letter that isn't a vowel
-            if (alphabet.vowel.Contains(lastLetter))
-                letters.Add(alphabet.RandomAlphabetLetterWithoutVowels);
+            // is a vowel, so we add a non-vowel
+            if (vowels.Contains(previous))
+                letters.Add(alphabetWithoutVowels.GetRandom());
 
-            // Previous was not a vowel, so we add a vowel
+            // is a 'non-vowel', so we add a vowel
             else
-                letters.Add(alphabet.RandomVowel);
+                letters.Add(vowels.GetRandom());
         }
 
-        return new string(letters.ToArray());
+        string genName = new string(letters.ToArray());
+        return genName;
     }
 
 
     public string NameModifier(string genName)
     {
         string modName = "";
-        int rand = 0;
 
         for (int i = 0; i < genName.Length; i++)
         {
             char letter = genName[i];
 
+            if (letter == 'a')
+                modName += new List<string> { "a", "ae" }.GetRandom().ToString();
+            
+            //else if (letter == 'b')
+            //    modName += new List<string> { "b", "bh" }.GetRandom().ToString();
+            
+            else if (letter == 'c')
+                modName += new List<string> { "c", "ch", "k" }.GetRandom().ToString();
+            
+            else if (letter == 'd')
+                modName += new List<string> { "d", "dr" }.GetRandom().ToString();
+            
+            else if (letter == 'e')
+                modName += new List<string> { "e", "ea" }.GetRandom().ToString();
+            
+            else if (letter == 'f')
+                modName += new List<string> { "f", "ph", "fw", "fj" }.GetRandom().ToString();
+            
+            else if (letter == 'g')
+                modName += new List<string> { "g", "gl", "gr", "gw" }.GetRandom().ToString();
+            
+            //else if (letter == 'h')
+            //    modName += new List<string> { "h", "hw" }.GetRandom().ToString();
+            
+            else if (letter == 'i')
+                modName += new List<string> { "i", "y" }.GetRandom().ToString();
+            
+            //else if (letter == 'j')
+            //    modName += new List<string> { "j", "jh", "jw" }.GetRandom().ToString();
+            
+            else if (letter == 'k')
+                modName += new List<string> { "k", "kh", "kr", "kw" }.GetRandom().ToString();
+            
+            //else if (letter == 'l')
+            //    modName += new List<string> { "l", "ll", "lh", "lw" }.GetRandom().ToString();
+            
+            else if (letter == 'm')
+                modName += new List<string> { "m", "m", "mn" }.GetRandom().ToString();
+            
+            //else if (letter == 'n')
+            //    modName += new List<string> { "n", "nn", "nm", "ng", "nh", "nw" }.GetRandom().ToString();
 
-            // 1 in "10" chances to ADD an "H" at the end of the char
-            rand = Random.Range(0, oneInXToAddAnH);
-            if (rand == 0)
-                modName += letter.ToString() + "h";
+            else if (letter == 'o')
+                modName += new List<string> { "o", "ou", "on" }.GetRandom().ToString();
 
+            else if (letter == 'p')
+                modName += new List<string> { "p", "ph", "pr" }.GetRandom().ToString();
+            
+            //else if (letter == 'q')
+            //    modName += new List<string> { "q" }.GetRandom().ToString();
 
-            // modifiy individual letters
-            rand = Random.Range(0, oneInXToModifyLetter);
+            else if (letter == 'r')
+                modName += new List<string> { "r", "rr", "rg", "rt" }.GetRandom().ToString();
 
-            if (rand == 0)
-            {
-                // Vowels =============================== Vowels
-                if (letter == 'a')
-                {
-                    if (Utilities.RandomTrueOrFalse())
-                        modName += "ae";
-                    else
-                        modName += "ay";
-                }
+            else if (letter == 's')
+                modName += new List<string> { "s", "ss", "sh", "sw" }.GetRandom().ToString();
 
-                if (letter == 'e')
-                    modName += "ea";
+            else if (letter == 't')
+                modName += new List<string> { "t", "th", "tr", "tw" }.GetRandom().ToString();
 
-                if (letter == 'i')
-                    modName += "y";
+            //else if (letter == 'u')
+            //    modName += new List<string> { "u", "uu", "uh", "uw" }.GetRandom().ToString();
 
-                if (letter == 'o')
-                {
-                    if (Utilities.RandomTrueOrFalse())
-                        modName += "ou";
-                    else
-                        modName += "ao";
-                }
+            //else if (letter == 'v')
+            //    modName += new List<string> { "v", "vh", "vw" }.GetRandom().ToString();
 
-                if (letter == 'u')
-                    modName += "uo";
+            //else if (letter == 'w')
+            //    modName += new List<string> { "w", "wh" }.GetRandom().ToString();
 
+            //else if (letter == 'x')
+            //    modName += new List<string> { "x", "xh" }.GetRandom().ToString();
 
-                // Alphabet =============================== Alphabet
-                if (letter == 'n')
-                {
-                    if (Utilities.RandomTrueOrFalse())
-                        modName += "ng";
-                    else
-                        modName += "nh";
-                }
+            //else if (letter == 'y')
+            //    modName += new List<string> { "y", "yh" }.GetRandom().ToString();
 
-                if (letter == 't')
-                {
-                    if (Utilities.RandomTrueOrFalse())
-                        modName += "th";
-                    else
-                        modName += "tk";
-                }
-
-                if (letter == 'p')
-                        modName += "ph";
-
-                if (letter == 'f')
-                        modName += "ph";
-            }
+            //else if (letter == 'z')
+            //    modName += new List<string> { "z", "zh" }.GetRandom().ToString();
 
             else
                 modName += letter.ToString();
         }
-
-        // Last letter modification
-        rand = Random.Range(0, 2);
-        if (rand == 0)
-        {
-            char lastChar = modName[modName.Length - 1];
-
-            if (lastChar == 'k' || lastChar == 'q' || lastChar == 'w' || lastChar == 'y' || lastChar == 'x' || lastChar == 'z')
-                modName += alphabet.RandomVowel.ToString() + alphabet.RandomFinisherLetter.ToString();
-        }
-        
 
         return modName;
     }

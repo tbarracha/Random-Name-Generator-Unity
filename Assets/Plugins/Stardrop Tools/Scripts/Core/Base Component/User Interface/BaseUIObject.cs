@@ -38,6 +38,9 @@ namespace StardropTools.UI
         public void SetSizeDelta(Vector2 sizeDelta) => SizeDelta = sizeDelta;
         public void SetSizeDelta(float x, float y) => SizeDelta = new Vector2(x, y);
 
+        public void SetRectSize(Vector2 rectSize) => SizeRect = rectSize;
+        public void SetRectSize(float x, float y) => SizeRect = new Vector2(x, y);
+
         #endregion // Rect
 
         protected override void DataCheck()
@@ -50,7 +53,7 @@ namespace StardropTools.UI
 
 
         // Set Pivot & Anchor
-        public void SetPivot(UIPivot uiPivot) => UtilitiesUI.SetUIPivot(RectTransform, uiPivot);
+        public void SetPivot(UIPivot uiPivot) => UtilitiesUI.SetRectTransformPivot(RectTransform, uiPivot);
         public void SetAnchor(UIAnchor uiAnchor) => UtilitiesUI.SetRectTransformAnchor(RectTransform, uiAnchor);
 
 

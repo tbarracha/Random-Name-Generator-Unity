@@ -6,8 +6,6 @@ namespace StardropTools.UI
 {
     public class UIScrollSnap : BaseUIObject, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
-        public enum EOrientation { horizontal, vertical }
-
         [Header("Properties")]
         public int index = 0;
         public int priority = 1;
@@ -21,7 +19,7 @@ namespace StardropTools.UI
         [SerializeField] bool debug;
 
         [Header("Animation")]
-        [SerializeField] EOrientation orientation;
+        [SerializeField] UIOrientation orientation;
         [SerializeField] AnimationCurve animCurve;
         [SerializeField] float duration = .2f;
 
@@ -127,31 +125,31 @@ namespace StardropTools.UI
             //if (debug)
             //    Debug.Log("Swiped to: " + direction);
 
-            if (orientation == EOrientation.horizontal)
+            if (orientation == UIOrientation.Horizontal)
             {
                 switch (swipeDirection)
                 {
                     case SwipeManager.SwipeDirection.left:
-                        if (orientation == EOrientation.horizontal)
+                        if (orientation == UIOrientation.Horizontal)
                             direction = 1;
                         break;
                     case SwipeManager.SwipeDirection.right:
-                        if (orientation == EOrientation.horizontal)
+                        if (orientation == UIOrientation.Horizontal)
                             direction = -1;
                         break;
                 }
             }
 
-            if (orientation == EOrientation.vertical)
+            if (orientation == UIOrientation.Vertical)
             {
                 switch (swipeDirection)
                 {
                     case SwipeManager.SwipeDirection.up:
-                        if (orientation == EOrientation.vertical)
+                        if (orientation == UIOrientation.Vertical)
                             direction = -1;
                         break;
                     case SwipeManager.SwipeDirection.down:
-                        if (orientation == EOrientation.vertical)
+                        if (orientation == UIOrientation.Vertical)
                             direction = 1;
                         break;
                 }
@@ -238,13 +236,13 @@ namespace StardropTools.UI
 
             // Reposition element to Show, instead of showing all elements until we reach target
             // this makes it look as if it was just next to each other
-            if (orientation == EOrientation.horizontal)
+            if (orientation == UIOrientation.Horizontal)
             {
                 Vector2 showPos = new Vector2(elementToHide.AnchoredPosition.x + elementToShow.WidthRect * direction, elementToHide.AnchoredPosition.y);
                 elementToShow.SetAnchoredPosition(showPos);
             }
 
-            else if (orientation == EOrientation.vertical)
+            else if (orientation == UIOrientation.Vertical)
             {
                 Vector2 showPos = new Vector2(elementToHide.AnchoredPosition.x, elementToHide.AnchoredPosition.y + elementToShow.HeightRect * direction);
                 elementToShow.SetAnchoredPosition(showPos);
@@ -263,10 +261,10 @@ namespace StardropTools.UI
 
             // get old Target Pos
             Vector2 oldTargetPos = Vector2.zero;
-            if (orientation == EOrientation.horizontal) // width
+            if (orientation == UIOrientation.Horizontal) // width
                 oldTargetPos = Vector2.right * elementToHide.WidthRect * direction * -1; // inverse direction because of position
 
-            else if (orientation == EOrientation.vertical) // height
+            else if (orientation == UIOrientation.Vertical) // height
                 oldTargetPos = Vector2.up * elementToHide.HeightRect * direction * -1; // inverse direction because of position
 
             while (t < duration)
@@ -301,10 +299,10 @@ namespace StardropTools.UI
             // inverse direction because of coordenates
             direction *= -1;
 
-            if (orientation == EOrientation.horizontal) // width
+            if (orientation == UIOrientation.Horizontal) // width
                 element.SetAnchoredPosition(Vector2.right * element.WidthRect * direction);
 
-            else if (orientation == EOrientation.vertical) // height
+            else if (orientation == UIOrientation.Vertical) // height
                 element.SetAnchoredPosition(Vector2.up * element.HeightRect * direction);
         }
         public void ReorderElements()
@@ -314,9 +312,9 @@ namespace StardropTools.UI
 
             for (int i = 1; i < elements.Count; i++)
             {
-                if (orientation == EOrientation.horizontal)
+                if (orientation == UIOrientation.Horizontal)
                     elements[i].SetAnchoredPosition(elements[i].WidthRect, 0);
-                else if (orientation == EOrientation.vertical)
+                else if (orientation == UIOrientation.Vertical)
                     elements[i].SetAnchoredPosition(0, elements[i].HeightRect);
 
                 elements[i].index = i;

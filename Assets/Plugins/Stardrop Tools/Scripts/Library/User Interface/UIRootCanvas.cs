@@ -33,7 +33,7 @@ namespace StardropTools.UI
                 rectsToCopy.Remove(rectTransform);
         }
 
-        public void CopySizes() => UtilitiesUI.CopySizeRects(RectTransform, rectsToCopy.ToArray());
+        public void CopySizes() => UtilitiesUI.CopySizeDeltas(RectTransform, rectsToCopy.ToArray());
 
 
 

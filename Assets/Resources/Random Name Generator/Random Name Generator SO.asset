@@ -12,33 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df86fc12375f79941bc4a9dbe7499860, type: 3}
   m_Name: Random Name Generator SO
   m_EditorClassIdentifier: 
-  alphabet: {fileID: 11400000, guid: 9daac1fd3d3ec8f47843489fe26451ae, type: 2}
   minLetterCount: 3
-  maxLetterCount: 4
-  minSubdivions: 3
-  maxSubdivions: 3
-  oneInXToAddAnH: 20
-  oneInXToModifyLetter: 8
+  maxLetterCount: 5
   amountOfNamesToGenerate: 20
   clickMeToGenerateNames: 0
+  modifyNames: 1
   names:
-  - rugah
-  - nousab
-  - oozhz
-  - rizeg
-  - aored
-  - apatk
-  - zaguph
-  - vefe
-  - osog
-  - bevyaz
-  - azyv
-  - ulohoo
-  - cearyzut
-  - huxo
-  - ythyu
-  - ruov
-  - uqii
-  - bexuhux
-  - byas
-  - mep
+  - ouphaejom
+  - qyqysh
+  - wukro
+  - lubargu
+  - aeqin
+  - dyshi
+  - waevaew
+  - aqex
+  - ounoch
+  - hikhux
+  - rouswex
+  - kaechaem
+  - fweashirg
+  - mouloudae
+  - mnelo
+  - glaejeav
+  - shaebe
+  - mnihirrae
+  - nyluz
+  - shaeliqi

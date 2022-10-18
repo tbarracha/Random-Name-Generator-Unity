@@ -6,9 +6,9 @@ namespace StardropTools.UI
 {
     public class UIScrollSnapManager : Singleton<UIScrollSnapManager>
     {
-        [UnityEngine.SerializeField] List<UIScrollSnap> scrollSnaps;
-        [UnityEngine.SerializeField] int lastIndex;
-        [UnityEngine.SerializeField] float delayNullify = .5f;
+        [SerializeField] List<UIScrollSnap> scrollSnaps;
+        [SerializeField] int lastIndex;
+        [SerializeField] float delayNullify = .5f;
         [SerializeField] bool getScrollSnaps;
 
         /// <summary>

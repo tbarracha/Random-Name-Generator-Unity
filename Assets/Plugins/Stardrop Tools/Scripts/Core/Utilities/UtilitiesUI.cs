@@ -29,7 +29,7 @@ namespace StardropTools
         /// <summary>
         /// Returns Vector2 pivot based on UIPivot enum
         /// </summary>
-        public static Vector2 SetUIPivot(RectTransform rectTransform, UIPivot pivot)
+        public static Vector2 SetRectTransformPivot(RectTransform rectTransform, UIPivot pivot)
         {
             switch (pivot)
             {

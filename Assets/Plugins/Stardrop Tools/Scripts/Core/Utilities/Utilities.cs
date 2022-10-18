@@ -237,6 +237,54 @@ public static class Utilities
             images[i].pixelsPerUnitMultiplier = pixelsPerUnit;
     }
 
+    #region Get Random
+
+    public static T GetRandom<T>(T[] array) => array.GetRandom(); // kinda redundant, isnt it?
+
+    public static T GetRandom<T>(T option1, T option2)
+    {
+        List<T> list = new List<T>();
+        list.Add(option1);
+        list.Add(option2);
+
+        return list.GetRandom();
+    }
+
+    public static T GetRandom<T>(T option1, T option2, T option3)
+    {
+        List<T> list = new List<T>();
+        list.Add(option1);
+        list.Add(option2);
+        list.Add(option3);
+
+        return list.GetRandom();
+    }
+
+    public static T GetRandom<T>(T option1, T option2, T option3, T option4)
+    {
+        List<T> list = new List<T>();
+        list.Add(option1);
+        list.Add(option2);
+        list.Add(option3);
+        list.Add(option4);
+
+        return list.GetRandom();
+    }
+
+    public static T GetRandom<T>(T option1, T option2, T option3, T option4, T option5)
+    {
+        List<T> list = new List<T>();
+        list.Add(option1);
+        list.Add(option2);
+        list.Add(option3);
+        list.Add(option4);
+        list.Add(option5);
+
+        return list.GetRandom();
+    }
+
+    #endregion // Get Random
+
 #if UNITY_EDITOR
     public static void ClearLog() //you can copy/paste this code to the bottom of your script
     {
