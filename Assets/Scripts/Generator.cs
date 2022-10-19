@@ -1,70 +1,85 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using StardropTools;
 using StardropTools.Tween;
+using StardropTools.Pool;
 
 public class Generator : Singleton<Generator>
 {
     [SerializeField] RandomNameGeneratorSO generatorSO;
+    [SerializeField] Pool<ListItem> poolListItems;
 
     [Header("Generation")]
     [SerializeField] Button generateButton;
     [SerializeField] Button variationButton;
     [Space]
+    [SerializeField] TMP_InputField generatedInputField;
+    [SerializeField] TMP_InputField variationInputField;
     [SerializeField] TextMeshProUGUI generatedText;
     [SerializeField] TextMeshProUGUI variationText;
     [SerializeField] Color[] activeInnactiveColors;
 
     [Header("Logs & Lists")]
+    [SerializeField] Transform parentHistory;
+    [SerializeField] Transform parentSaved;
     [SerializeField] List<string> history;
     [SerializeField] List<string> saved;
+    [Space]
+    [SerializeField] List<ListItem> savedItems;
+    [SerializeField] List<ListItem> historyItems;
 
 
     protected override void Awake()
     {
         base.Awake();
 
+        poolListItems.Populate();
+
         generateButton.onClick.AddListener(GenerateName);
         variationButton.onClick.AddListener(GenerateVariation);
+
+        generatedInputField.onSubmit.AddListener(AddToHistory);
+        variationInputField.onSubmit.AddListener(AddToHistory);
 
         GenerateName();
 
         history = new List<string>();
-        saved = new List<string>();
+
+        LoadSaved();
     }
 
     public void GenerateName()
     {
-        string genName = generatorSO.GenerateNameBasedOnLetterCount();
-        generatedText.text = genName.FirstLetterUppercase();
-        variationText.text = "Variation";
+        string genName = generatorSO.GenerateNameBasedOnLetterCount().FirstLetterUppercase();
+
+        generatedInputField.text = genName;
+        variationInputField.text = "Variation";
 
         TweenTextColors(1, 0);
 
-        history.Add(genName);
+        AddToHistory(genName);
     }
 
     public void GenerateVariation()
     {
-        string variant = generatorSO.NameModifier(generatedText.text);
+        string variant = generatorSO.NameModifier(generatedText.text).FirstLetterUppercase();
 
         while (variant == generatedText.text || variant == variationText.text)
             variant = generatorSO.NameModifier(generatedText.text);
 
-        variationText.text = variant.FirstLetterUppercase();
+        variationInputField.text = variant;
 
         TweenTextColors(1, 1);
 
-        history.Add(variant);
+        AddToHistory(variant);
     }
 
     public void SetGeneratedText(string text)
     {
-        generatedText.text = text;
-        variationText.text = "Variation";
+        generatedInputField.text = text;
+        variationInputField.text = "Variation";
 
         TweenTextColors(1, 0);
     }
@@ -89,5 +104,75 @@ public class Generator : Singleton<Generator>
             .SetDuration(.2f)
             .SetID(textMesh.GetHashCode())
             .Initialize();
+    }
+
+
+    public void AddToSaved(string text)
+    {
+        saved.AddSafe(text);
+
+        ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
+        item.ToggleSaved(true);
+        item.SetText(text);
+        item.Initialize();
+
+        savedItems.Add(item);
+    }
+
+    public void AddToSaved(ListItem item)
+    {
+        saved.AddSafe(item.text);
+        savedItems.Add(item);
+        item.transform.SetParent(parentSaved);
+    }
+
+    public void RemoveFromSaved(ListItem item)
+    {
+        saved.RemoveSafe(item.text);
+        item.Despawn();
+    }
+
+    public void AddToHistory(string text)
+    {
+        history.Add(text);
+
+        ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentHistory);
+        item.ToggleSaved(false);
+        item.SetText(text);
+        item.Initialize();
+        item.SetAsFirstSibling();
+
+        savedItems.Add(item);
+    }
+
+    public void RemoveFromHistory(ListItem item)
+    {
+        history.RemoveSafe(item.text);
+        item.Despawn();
+    }
+
+    void LoadSaved()
+    {
+        saved = SaveManager.BinaryLoad<List<string>>("saved.dat");
+
+        if (saved.Exists() == false)
+            saved = new List<string>();
+
+        if (saved.Count > 0)
+            for (int i = 0; i < saved.Count; i++)
+            {
+                ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
+                item.ToggleSaved(true);
+                item.SetText(saved[i]);
+                item.Initialize();
+
+                savedItems.Add(item);
+            }
+                
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveManager.BinarySave(saved, "saved.dat");
     }
 }

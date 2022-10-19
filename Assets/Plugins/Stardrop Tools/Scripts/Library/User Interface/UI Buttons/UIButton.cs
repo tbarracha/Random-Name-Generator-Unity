@@ -7,7 +7,9 @@ namespace StardropTools.UI
     {
         public int ButtonID;
         [SerializeField] UnityEngine.UI.Button button;
-        [SerializeField] UnityEngine.UI.Selectable selectable;
+
+        public UnityEngine.UI.Button Button => button;
+        public bool Interactible { get => button.interactable; set => button.interactable = value; }
 
         public UnityEngine.Events.UnityEvent OnClick => button.onClick;
         public readonly GameEvent<int> OnClickID = new GameEvent<int>();
@@ -18,5 +20,7 @@ namespace StardropTools.UI
 
             OnClick.AddListener(() => OnClickID?.Invoke(ButtonID));
         }
+
+        public void SetInteractible(bool value) => button.interactable = value;
     }
 }

@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 263d7dc4b557c994c9a8da8d105b3740, type: 3}
-  m_Name: List Item Settings
+  m_Script: {fileID: 11500000, guid: 97d766ef6f3d6ae4b966fc1b1dbe9bbb, type: 3}
+  m_Name: Gen Button Settings SO
   m_EditorClassIdentifier: 
-  sizeSelected: {x: 168, y: 32}
-  sizeIdle: {x: 128, y: 32}
-  moveDistance: 40
-  moveDuration: 0.2
-  fadeDuration: 0.1
   textColors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  imgSprites: []
+  duration: 0.2
