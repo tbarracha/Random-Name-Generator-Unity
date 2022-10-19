@@ -116,6 +116,18 @@ public static class Utilities
         line.endWidth = width;
     }
 
+    public static string FirstLetterUppercase(this string str)
+    {
+        if (string.IsNullOrEmpty(str))
+            return string.Empty;
+
+        str.ToLower();
+        char[] characters = str.ToCharArray();
+        characters[0] = char.ToUpper(characters[0]);
+
+        return new string(characters);
+    }
+
     public static Vector3 ViewportRaycast(LayerMask layerMask)
     {
         if (camera == null)

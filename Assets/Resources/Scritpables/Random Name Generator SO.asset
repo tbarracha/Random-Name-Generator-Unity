@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Random Name Generator SO
   m_EditorClassIdentifier: 
   minLetterCount: 3
-  maxLetterCount: 5
+  maxLetterCount: 7
   amountOfNamesToGenerate: 20
   clickMeToGenerateNames: 0
   modifyNames: 1

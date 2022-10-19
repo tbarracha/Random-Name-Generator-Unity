@@ -39,7 +39,8 @@ public class Generator : Singleton<Generator>
     public void GenerateName()
     {
         string genName = generatorSO.GenerateNameBasedOnLetterCount();
-        generatedText.text = genName;
+        generatedText.text = genName.FirstLetterUppercase();
+        variationText.text = "Variation";
 
         TweenTextColors(1, 0);
 
@@ -53,11 +54,19 @@ public class Generator : Singleton<Generator>
         while (variant == generatedText.text || variant == variationText.text)
             variant = generatorSO.NameModifier(generatedText.text);
 
-        variationText.text = variant;
+        variationText.text = variant.FirstLetterUppercase();
 
         TweenTextColors(1, 1);
 
         history.Add(variant);
+    }
+
+    public void SetGeneratedText(string text)
+    {
+        generatedText.text = text;
+        variationText.text = "Variation";
+
+        TweenTextColors(1, 0);
     }
 
     /// <summary>

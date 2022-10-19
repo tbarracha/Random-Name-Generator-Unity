@@ -83,6 +83,9 @@ namespace StardropTools.UI
                             item.RectTransform.anchoredPosition = new Vector2(prevItem.RectTransform.anchoredPosition.x + prevItem.RectTransform.sizeDelta.x, 0);
                         }
 
+                        else
+                            item.RectTransform.anchoredPosition = new Vector2(0, 0);
+
                         break;
 
 
@@ -95,6 +98,9 @@ namespace StardropTools.UI
                             var prevItem = flexItems[i - 1];
                             item.RectTransform.anchoredPosition = new Vector2(0, prevItem.RectTransform.anchoredPosition.y - prevItem.RectTransform.sizeDelta.y);
                         }
+
+                        else
+                            item.RectTransform.anchoredPosition = new Vector2(0, 0);
 
                         break;
 

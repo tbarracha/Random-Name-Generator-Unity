@@ -84,7 +84,7 @@ public class RandomNameGeneratorSO : ScriptableObject
             char letter = genName[i];
 
             if (letter == 'a')
-                modName += new List<string> { "a", "ae" }.GetRandom().ToString();
+                modName += new List<string> { "a", "ae", "ea", "an", "ar" }.GetRandom().ToString();
             
             //else if (letter == 'b')
             //    modName += new List<string> { "b", "bh" }.GetRandom().ToString();
@@ -93,10 +93,10 @@ public class RandomNameGeneratorSO : ScriptableObject
                 modName += new List<string> { "c", "ch", "k" }.GetRandom().ToString();
             
             else if (letter == 'd')
-                modName += new List<string> { "d", "dr" }.GetRandom().ToString();
+                modName += new List<string> { "d", "d", "dr" }.GetRandom().ToString();
             
             else if (letter == 'e')
-                modName += new List<string> { "e", "ea" }.GetRandom().ToString();
+                modName += new List<string> { "e", "ea", "ae", "en" }.GetRandom().ToString();
             
             else if (letter == 'f')
                 modName += new List<string> { "f", "ph", "fw", "fj" }.GetRandom().ToString();
@@ -108,7 +108,7 @@ public class RandomNameGeneratorSO : ScriptableObject
             //    modName += new List<string> { "h", "hw" }.GetRandom().ToString();
             
             else if (letter == 'i')
-                modName += new List<string> { "i", "y" }.GetRandom().ToString();
+                modName += new List<string> { "i", "y", "in" }.GetRandom().ToString();
             
             //else if (letter == 'j')
             //    modName += new List<string> { "j", "jh", "jw" }.GetRandom().ToString();
@@ -152,8 +152,8 @@ public class RandomNameGeneratorSO : ScriptableObject
             //else if (letter == 'w')
             //    modName += new List<string> { "w", "wh" }.GetRandom().ToString();
 
-            //else if (letter == 'x')
-            //    modName += new List<string> { "x", "xh" }.GetRandom().ToString();
+            else if (letter == 'x')
+                modName += new List<string> { "x", "xh" }.GetRandom().ToString();
 
             //else if (letter == 'y')
             //    modName += new List<string> { "y", "yh" }.GetRandom().ToString();
