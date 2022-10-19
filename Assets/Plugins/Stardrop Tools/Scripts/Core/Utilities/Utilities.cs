@@ -200,11 +200,10 @@ public static class Utilities
     }
 
     /// <summary>
-    /// Creates new file if there isn't one or adds contents to an existing one.
+    /// Creates new file if there isn't one or adds contents to an existing one, and Returns its path
     /// File name ex: 'logs.txt' (extensions can be whatever ex: .bnb, .cro, etc,.)
     /// </summary>
-    /// <param name="fileName"></param>
-    public static void CreateOrAddTextToFile(string path, string fileName, string content, int newLineAmount = 0)
+    public static string CreateOrAddTextToFile(string path, string fileName, string content, int newLineAmount = 0)
     {
         // path to file
         string filePath = path + fileName;
@@ -222,6 +221,24 @@ public static class Utilities
         else
             File.AppendAllText(filePath, content);
 
+        return filePath;
+    }
+
+    /// <summary>
+    /// Creates new file if there isn't one or adds contents to an existing one, and Returns its path
+    /// File name ex: 'logs.txt' (extensions can be whatever ex: .bnb, .cro, etc,.)
+    /// </summary>
+    public static string CreateOrAddTextToFile(string path, string content)
+    {
+        // create file it if doesnt exist
+        if (File.Exists(path) == false)
+            File.WriteAllText(path, content);
+
+        // add content to file
+        else
+            File.AppendAllText(path, content);
+
+        return path;
     }
 
     public static void SetImageArrayColor(UnityEngine.UI.Image[] images, Color color)

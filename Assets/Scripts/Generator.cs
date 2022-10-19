@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using StardropTools.Tween;
 using StardropTools.Pool;
+using SFB;
 
 public class Generator : Singleton<Generator>
 {
@@ -22,10 +23,16 @@ public class Generator : Singleton<Generator>
     [SerializeField] Color[] activeInnactiveColors;
 
     [Header("Logs & Lists")]
-    [SerializeField] Transform parentHistory;
     [SerializeField] Transform parentSaved;
-    [SerializeField] List<string> history;
-    [SerializeField] List<string> saved;
+    [SerializeField] Transform parentHistory;
+    [Space]
+    [SerializeField] Button clearSavedButton;
+    [SerializeField] Button clearHistoryButton;
+    [SerializeField] Button downloadSavedButton;
+    [SerializeField] Button downloadHistoryButton;
+    [Space]
+    [SerializeField] List<string> savedNames;
+    [SerializeField] List<string> nameHistory;
     [Space]
     [SerializeField] List<ListItem> savedItems;
     [SerializeField] List<ListItem> historyItems;
@@ -41,11 +48,19 @@ public class Generator : Singleton<Generator>
         variationButton.onClick.AddListener(GenerateVariation);
 
         generatedInputField.onSubmit.AddListener(AddToHistory);
+        generatedInputField.onDeselect.AddListener(AddToHistory);
         variationInputField.onSubmit.AddListener(AddToHistory);
+        variationInputField.onDeselect.AddListener(AddToHistory);
+
+        clearSavedButton.onClick.AddListener(ClearSaved);
+        clearHistoryButton.onClick.AddListener(ClearHistory);
+
+        downloadSavedButton.onClick.AddListener(DownloadSavedNames);
+        downloadHistoryButton.onClick.AddListener(DownloadHistoryNames);
 
         GenerateName();
 
-        history = new List<string>();
+        nameHistory = new List<string>();
 
         LoadSaved();
     }
@@ -109,32 +124,42 @@ public class Generator : Singleton<Generator>
 
     public void AddToSaved(string text)
     {
-        saved.AddSafe(text);
+        savedNames.AddSafe(text);
 
         ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
         item.ToggleSaved(true);
         item.SetText(text);
         item.Initialize();
 
-        savedItems.Add(item);
+        savedItems.AddSafe(item);
     }
 
     public void AddToSaved(ListItem item)
     {
-        saved.AddSafe(item.text);
-        savedItems.Add(item);
+        savedNames.AddSafe(item.text);
+        savedItems.AddSafe(item);
+
         item.transform.SetParent(parentSaved);
     }
 
     public void RemoveFromSaved(ListItem item)
     {
-        saved.RemoveSafe(item.text);
+        savedNames.RemoveSafe(item.text);
         item.Despawn();
+    }
+
+    public void ClearSaved()
+    {
+        savedNames = new List<string>();
+        for (int i = 0; i < savedItems.Count; i++)
+            savedItems[i].Despawn();
+
+        SaveList();
     }
 
     public void AddToHistory(string text)
     {
-        history.Add(text);
+        nameHistory.Add(text);
 
         ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentHistory);
         item.ToggleSaved(false);
@@ -142,37 +167,72 @@ public class Generator : Singleton<Generator>
         item.Initialize();
         item.SetAsFirstSibling();
 
-        savedItems.Add(item);
+        historyItems.Add(item);
     }
 
     public void RemoveFromHistory(ListItem item)
     {
-        history.RemoveSafe(item.text);
+        nameHistory.RemoveSafe(item.text);
         item.Despawn();
+    }
+
+    public void ClearHistory()
+    {
+        nameHistory = new List<string>();
+
+        for (int i = 0; i < historyItems.Count; i++)
+            historyItems[i].Despawn();
     }
 
     void LoadSaved()
     {
-        saved = SaveManager.BinaryLoad<List<string>>("saved.dat");
+        savedNames = SaveManager.BinaryLoad<List<string>>("saved.dat");
 
-        if (saved.Exists() == false)
-            saved = new List<string>();
+        if (savedNames.Exists() == false)
+            savedNames = new List<string>();
 
-        if (saved.Count > 0)
-            for (int i = 0; i < saved.Count; i++)
+        if (savedNames.Count > 0)
+            for (int i = 0; i < savedNames.Count; i++)
             {
                 ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
-                item.ToggleSaved(true);
-                item.SetText(saved[i]);
+                item.SetText(savedNames[i]);
                 item.Initialize();
 
                 savedItems.Add(item);
+                item.ToggleSaved(true);
             }
-                
+    }
+
+    public void SaveList() => SaveManager.BinarySave(savedNames, "saved.dat");
+
+    /// <summary>
+    /// 1) get path to save
+    /// 2) save file on path
+    /// </summary>
+    public void DownloadSavedNames()
+    {
+        string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Saved Names", "txt");
+
+        string contents = "";
+        for (int i = 0; i < savedNames.Count; i++)
+            contents += savedNames[i] + "\n";
+
+        Utilities.CreateOrAddTextToFile(path, contents);
+    }
+
+    public void DownloadHistoryNames()
+    {
+        string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Name Generation History", "txt");
+
+        string contents = "";
+        for (int i = 0; i < nameHistory.Count; i++)
+            contents += nameHistory[i] + "\n";
+
+        Utilities.CreateOrAddTextToFile(path, contents);
     }
 
     private void OnApplicationQuit()
     {
-        SaveManager.BinarySave(saved, "saved.dat");
+        SaveList();
     }
 }

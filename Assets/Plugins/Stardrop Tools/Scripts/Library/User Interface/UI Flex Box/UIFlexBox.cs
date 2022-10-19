@@ -165,7 +165,10 @@ namespace StardropTools.UI
             base.OnValidate();
 
             if (parent == null && RectTransform.parent != null)
-                parent = RectTransform.parent.GetComponent<RectTransform>();
+                parent = Parent.GetComponent<RectTransform>();
+
+            if (parent == null)
+                return;
 
             parentIsFlexBox = parent.GetComponent<UIFlexBox>() != null;
 
