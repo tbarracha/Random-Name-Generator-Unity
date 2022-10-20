@@ -42,6 +42,7 @@ public class Generator : Singleton<Generator>
     {
         base.Awake();
 
+        nameHistory = new List<string>();
         poolListItems.Populate();
 
         generateButton.onClick.AddListener(GenerateName);
@@ -59,9 +60,6 @@ public class Generator : Singleton<Generator>
         downloadHistoryButton.onClick.AddListener(DownloadHistoryNames);
 
         GenerateName();
-
-        nameHistory = new List<string>();
-
         LoadSaved();
     }
 
@@ -137,9 +135,13 @@ public class Generator : Singleton<Generator>
     public void AddToSaved(ListItem item)
     {
         savedNames.AddSafe(item.text);
-        savedItems.AddSafe(item);
 
-        item.transform.SetParent(parentSaved);
+        ListItem savedItem = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
+        savedItem.ToggleSaved(true);
+        savedItem.SetText(item.text);
+        savedItem.Initialize();
+
+        savedItems.AddSafe(savedItem);
     }
 
     public void RemoveFromSaved(ListItem item)
@@ -187,17 +189,17 @@ public class Generator : Singleton<Generator>
     void LoadSaved()
     {
         savedNames = SaveManager.BinaryLoad<List<string>>("saved.dat");
-
+        
         if (savedNames.Exists() == false)
             savedNames = new List<string>();
-
+        
         if (savedNames.Count > 0)
             for (int i = 0; i < savedNames.Count; i++)
             {
                 ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
                 item.SetText(savedNames[i]);
                 item.Initialize();
-
+        
                 savedItems.Add(item);
                 item.ToggleSaved(true);
             }
@@ -212,22 +214,22 @@ public class Generator : Singleton<Generator>
     public void DownloadSavedNames()
     {
         string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Saved Names", "txt");
-
+        
         string contents = "";
         for (int i = 0; i < savedNames.Count; i++)
             contents += savedNames[i] + "\n";
-
+        
         Utilities.CreateOrAddTextToFile(path, contents);
     }
 
     public void DownloadHistoryNames()
     {
         string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Name Generation History", "txt");
-
+        
         string contents = "";
         for (int i = 0; i < nameHistory.Count; i++)
             contents += nameHistory[i] + "\n";
-
+        
         Utilities.CreateOrAddTextToFile(path, contents);
     }
 

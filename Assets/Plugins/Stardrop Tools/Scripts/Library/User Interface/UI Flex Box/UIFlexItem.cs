@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿
 using UnityEngine;
 
 namespace StardropTools.UI
@@ -9,17 +9,14 @@ namespace StardropTools.UI
         [SerializeField] string itemName;
         [SerializeField] RectTransform rectTransform;
         [Range(0, 1)] [SerializeField] float percent;
-        [SerializeField] bool isAbsolute;
 
         public RectTransform RectTransform => rectTransform;
         public float Percent => percent;
-        public bool IsAbsolute => isAbsolute;
 
-        public UIFlexItem(RectTransform rectTransform, float percent, bool isAbsolute)
+        public UIFlexItem(RectTransform rectTransform, float percent)
         {
             this.rectTransform = rectTransform;
             this.percent = percent;
-            this.isAbsolute = isAbsolute;
 
             itemName = rectTransform.name;
         }

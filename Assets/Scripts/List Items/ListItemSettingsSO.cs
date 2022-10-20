@@ -7,7 +7,6 @@ public class ListItemSettingsSO : ScriptableObject
     public Vector2 sizeSelected = new Vector2(128 + 40, 32);
     public Vector2 sizeIdle = new Vector2(128, 32);
     [Space]
-    public float moveDistance = 40;
     public float moveDuration = .2f;
     public float fadeDuration = .2f;
     [Space]

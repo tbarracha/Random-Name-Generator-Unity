@@ -28,7 +28,7 @@ namespace StardropTools.UI
 
             for (int i = 0; i < RectTransform.childCount; i++)
             {
-                flexItems[i] = new UIFlexItem(RectTransform.GetChild(i).GetComponent<RectTransform>(), percent, false);
+                flexItems[i] = new UIFlexItem(RectTransform.GetChild(i).GetComponent<RectTransform>(), percent);
                 UtilitiesUI.SetRectTransformAnchor(flexItems[i].RectTransform, UIAnchor.TopLeft);
                 UtilitiesUI.SetRectTransformPivot(flexItems[i].RectTransform, UIPivot.TopLeft);
 
