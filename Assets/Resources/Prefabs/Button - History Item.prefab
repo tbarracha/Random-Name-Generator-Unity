@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 8, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3189821221000854733
 MonoBehaviour:
@@ -408,6 +408,7 @@ MonoBehaviour:
   button: {fileID: 7917565045961649165}
   textMesh: {fileID: 7917565045721166280}
   likeToggle: {fileID: 8131236436006076936}
+  toggleComponent: {fileID: 3189821221000854733}
   text: 
   opacityImages:
   - {fileID: 7917565045117358341}

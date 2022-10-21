@@ -21,6 +21,8 @@ public class Generator : Singleton<Generator>
     [SerializeField] TextMeshProUGUI generatedText;
     [SerializeField] TextMeshProUGUI variationText;
     [SerializeField] Color[] activeInnactiveColors;
+    [Space]
+    [SerializeField] CopyToClipboardNotification copyToClipboardNotification;
 
     [Header("Logs & Lists")]
     [SerializeField] Transform parentSaved;
@@ -30,6 +32,8 @@ public class Generator : Singleton<Generator>
     [SerializeField] Button clearHistoryButton;
     [SerializeField] Button downloadSavedButton;
     [SerializeField] Button downloadHistoryButton;
+    [Space]
+    [SerializeField] bool clearSaved;
     [Space]
     [SerializeField] List<string> savedNames;
     [SerializeField] List<string> nameHistory;
@@ -59,6 +63,12 @@ public class Generator : Singleton<Generator>
         downloadSavedButton.onClick.AddListener(DownloadSavedNames);
         downloadHistoryButton.onClick.AddListener(DownloadHistoryNames);
 
+        downloadSavedButton.onClick.AddListener(() => copyToClipboardNotification.Animate());
+        downloadHistoryButton.onClick.AddListener(() => copyToClipboardNotification.Animate());
+    }
+
+    private void Start()
+    {
         GenerateName();
         LoadSaved();
     }
@@ -125,9 +135,9 @@ public class Generator : Singleton<Generator>
         savedNames.AddSafe(text);
 
         ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
-        item.ToggleSaved(true);
-        item.SetText(text);
         item.Initialize();
+        item.SetText(text);
+        item.ToggleSaved(true);
 
         savedItems.AddSafe(item);
     }
@@ -135,19 +145,20 @@ public class Generator : Singleton<Generator>
     public void AddToSaved(ListItem item)
     {
         savedNames.AddSafe(item.text);
+        item.SetParent(parentSaved);
 
-        ListItem savedItem = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
-        savedItem.ToggleSaved(true);
-        savedItem.SetText(item.text);
-        savedItem.Initialize();
-
-        savedItems.AddSafe(savedItem);
+        historyItems.Remove(item);
+        savedItems.AddSafe(item);
     }
 
     public void RemoveFromSaved(ListItem item)
     {
         savedNames.RemoveSafe(item.text);
-        item.Despawn();
+        item.SetParent(parentHistory);
+        item.SetAsFirstSibling();
+
+        savedItems.Remove(item);
+        historyItems.Add(item);
     }
 
     public void ClearSaved()
@@ -164,9 +175,9 @@ public class Generator : Singleton<Generator>
         nameHistory.Add(text);
 
         ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentHistory);
+        item.Initialize();
         item.ToggleSaved(false);
         item.SetText(text);
-        item.Initialize();
         item.SetAsFirstSibling();
 
         historyItems.Add(item);
@@ -197,11 +208,11 @@ public class Generator : Singleton<Generator>
             for (int i = 0; i < savedNames.Count; i++)
             {
                 ListItem item = poolListItems.Spawn(Vector3.zero, Quaternion.identity, parentSaved);
-                item.SetText(savedNames[i]);
                 item.Initialize();
+                item.SetText(savedNames[i]);
+                item.ToggleSaved(true);
         
                 savedItems.Add(item);
-                item.ToggleSaved(true);
             }
     }
 
@@ -213,28 +224,52 @@ public class Generator : Singleton<Generator>
     /// </summary>
     public void DownloadSavedNames()
     {
-        string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Saved Names", "txt");
-        
+        //string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Saved Names", "txt");
+        //
+        //if (path.Length == 0)
+        //    return;
+
         string contents = "";
         for (int i = 0; i < savedNames.Count; i++)
             contents += savedNames[i] + "\n";
+
+        UniClipboard.SetText(contents);
         
-        Utilities.CreateOrAddTextToFile(path, contents);
+        //Utilities.CreateOrAddTextToFile(path, contents);
     }
 
+
+    /// <summary>
+    /// 1) get path to save
+    /// 2) save file on path
+    /// </summary>
     public void DownloadHistoryNames()
     {
-        string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Name Generation History", "txt");
-        
+        //string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "Name Generation History", "txt");
+        //
+        //if (path.Length == 0)
+        //    return;
+        //
         string contents = "";
         for (int i = 0; i < nameHistory.Count; i++)
             contents += nameHistory[i] + "\n";
-        
-        Utilities.CreateOrAddTextToFile(path, contents);
+
+        UniClipboard.SetText(contents);
+
+        //Utilities.CreateOrAddTextToFile(path, contents);
     }
 
     private void OnApplicationQuit()
     {
         SaveList();
+    }
+
+    private void OnValidate()
+    {
+        if (clearSaved)
+        {
+            ClearSaved();
+            clearSaved = false;
+        }
     }
 }

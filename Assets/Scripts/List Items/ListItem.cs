@@ -12,6 +12,7 @@ public class ListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] protected Button button;
     [SerializeField] protected TMPro.TextMeshProUGUI textMesh;
     [SerializeField] protected StardropTools.UI.UIToggleButton likeToggle;
+    [SerializeField] protected StardropTools.UI.UIToggleButtonComponent toggleComponent;
     public string text;
 
     [Header("Components to animate")]
@@ -28,6 +29,8 @@ public class ListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         likeToggle.OnToggleTrue.AddListener(() => Generator.Instance.AddToSaved(this));
         likeToggle.OnToggleFalse.AddListener(() => Generator.Instance.RemoveFromSaved(this));
     }
+
+    public void SetParent(Transform parent) => transform.SetParent(parent);
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -86,7 +89,7 @@ public class ListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    public void ToggleSaved(bool saved) => likeToggle.Toggle(saved);
+    public void ToggleSaved(bool saved) => likeToggle.Toggle(saved, false);
 
     public void SetText(string text)
     {

@@ -9,6 +9,8 @@ namespace StardropTools.Tween
         public Color end;
         public Color lerped;
 
+        public readonly GameEvent<Color> OnTweenColor = new GameEvent<Color>();
+
         protected override void SetEssentials()
         {
             //tweenID = start.GetHashCode();
@@ -42,6 +44,13 @@ namespace StardropTools.Tween
         protected override void TweenUpdate(float percent)
         {
             lerped = Color.LerpUnclamped(start, end, Ease(percent));
+            OnTweenColor?.Invoke(lerped);
+        }
+
+        protected override void Complete()
+        {
+            base.Complete();
+            OnTweenColor?.Invoke(lerped);
         }
 
         protected override void Loop()

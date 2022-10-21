@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 263d7dc4b557c994c9a8da8d105b3740, type: 3}
   m_Name: List Item Settings
   m_EditorClassIdentifier: 
-  sizeSelected: {x: 152, y: 32}
+  sizeSelected: {x: 160, y: 32}
   sizeIdle: {x: 128, y: 32}
-  moveDistance: 24
   moveDuration: 0.2
   fadeDuration: 0.1
   textColors:

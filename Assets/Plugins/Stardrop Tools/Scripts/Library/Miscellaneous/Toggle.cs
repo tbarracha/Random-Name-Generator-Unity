@@ -15,6 +15,14 @@ namespace StardropTools
         public readonly GameEvent OnToggleTrue = new GameEvent();
         public readonly GameEvent OnToggleFalse = new GameEvent();
 
+        public void SetToggle(bool value, bool invokeEvents)
+        {
+            toggle = value;
+
+            if (invokeEvents)
+                ToggleEvents();
+        }
+
         public bool ToggleValue()
         {
             toggle = !toggle;

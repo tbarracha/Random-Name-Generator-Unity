@@ -9,6 +9,8 @@ namespace StardropTools.Tween
         protected Quaternion end;
         protected Quaternion lerped;
 
+        public readonly GameEvent<Quaternion> OnTweenQuaternion = new GameEvent<Quaternion>();
+
         protected override void SetEssentials()
         {
             tweenType = TweenType.Quaternion;
@@ -41,6 +43,13 @@ namespace StardropTools.Tween
         protected override void TweenUpdate(float percent)
         {
             lerped = Quaternion.LerpUnclamped(start, end, Ease(percent));
+            OnTweenQuaternion?.Invoke(lerped);
+        }
+
+        protected override void Complete()
+        {
+            base.Complete();
+            OnTweenQuaternion?.Invoke(lerped);
         }
 
         protected override void Loop()

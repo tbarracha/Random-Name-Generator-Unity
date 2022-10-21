@@ -7,6 +7,8 @@ namespace StardropTools.Tween
     {
         public Color color;
 
+        public readonly GameEvent<Color> OnTweenColorOpacity = new GameEvent<Color>();
+             
         protected override void SetEssentials()
         {
             //tweenID = color.GetHashCode();
@@ -35,6 +37,14 @@ namespace StardropTools.Tween
         {
             base.TweenUpdate(percent);
             color.a = lerped;
+
+            OnTweenColorOpacity?.Invoke(color);
+        }
+
+        protected override void Complete()
+        {
+            base.Complete();
+            OnTweenColorOpacity?.Invoke(color);
         }
     }
 }

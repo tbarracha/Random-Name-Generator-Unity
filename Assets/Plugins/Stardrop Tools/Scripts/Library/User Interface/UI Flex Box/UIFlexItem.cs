@@ -11,7 +11,7 @@ namespace StardropTools.UI
         [Range(0, 1)] [SerializeField] float percent;
 
         public RectTransform RectTransform => rectTransform;
-        public float Percent => percent;
+        public float Percent { get => percent; set => percent = value; }
 
         public UIFlexItem(RectTransform rectTransform, float percent)
         {

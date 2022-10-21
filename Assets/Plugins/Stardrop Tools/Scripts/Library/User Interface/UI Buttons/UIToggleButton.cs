@@ -62,6 +62,11 @@ namespace StardropTools.UI
             RefreshToggleComponents();
         }
 
+        public void Toggle(bool value, bool invokeEvents)
+        {
+            toggle.SetToggle(value, invokeEvents);
+            RefreshToggleComponents();
+        }
 
         protected void RefreshToggleComponents()
         {
